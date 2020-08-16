@@ -1,0 +1,74 @@
+graphQL - строготипизированный
+
+const graphqlHTTP = require('express-graphql')
+app.use(graphqlHTTP({
+  schema: schema, <-- обязательное поле
+  rootValue: resolver <-- обязательное поле
+}))
+
+(schema)
+module.exports = buildSchema(`
+    type Query {
+        test: String! <--- восклицательный знак обозначает, что поле обязательное
+    }
+`)
+минимум надо описать один query
+
+в ресолверах мы описываем свойтсва объекта и возращаем то, что написали
+
+module.exports = {
+    test() {
+        return 'hello graphQL'
+    }
+}
+
+дефолтные типы обозначаются в схеме 
+type User {
+  name: String!, 
+  age: Int!
+}
+
+type TestType {
+  count: Int!
+  users: [User!]!
+}
+
+type Query {
+    test: TestType!
+}
+
+
+
+
+query {
+  test {
+    count
+  }
+} (уточняем что именно хотим получить)
+
+
+query {
+  test {
+    count
+    users {
+      age
+      name
+      email
+    }
+  }
+}
+
+======
+
+фукнции с динамицескими параметрами
+type Query {
+  test: TestType!
+  random(min: Int, max: Int!, count: Int!) : [Float!]!
+}
+
+=======
+type Query - аналог GET запроса
+
+type Mutation -
+
+для инпутов есть - input Интерфейс {}
